@@ -28,8 +28,8 @@ source de10-lite_pinning.tcl
 
 project_close
 
-
-# For this script to work the following folder structure is required. 
+#### Information ####
+# For this script to work the following folder structure is required:
 # - quartus
 #   - create_project.tcl
 #   - nios2_system.qsys

@@ -4,10 +4,8 @@ use ieee.std_logic_1164.all;
 entity system_top is
   port (
     clk : in std_logic;
-    arst_n : in std_logic;
-    sw : in std_logic_vector(9 downto 0);
-    led : out std_logic_vector(9 downto 0)
-  );
+    arst_n : in std_logic
+	 );
 end entity;
 
 architecture rtl of system_top is
@@ -21,7 +19,7 @@ architecture rtl of system_top is
 
 begin
 
-  led <= sw;
+  
   u0 : component nios2_system
     port map(
       clk_clk => clk, --   clk.clk
