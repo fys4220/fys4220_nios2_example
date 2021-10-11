@@ -32,7 +32,7 @@ project_close
 # For this script to work the following folder structure is required:
 # - quartus
 #   - create_project.tcl
-#   - nios2_system.qsys
+#   - nios2_cat ystem.qsys
 #   - de10-lite_pinning.tcl
 #   - system_top.sdc
 # - hdl
