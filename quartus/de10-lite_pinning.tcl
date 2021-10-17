@@ -31,6 +31,8 @@ set_location_assignment PIN_P11 -to clk
 
 # key0 - used as reset
 set_location_assignment PIN_B8 -to arst_n
+# key1 - used as interrupt
+set_location_assignment PIN_A7 -to irq
 
 #To avoid that the FPGA is driving an unintended value on pins that are not in use:
 set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"

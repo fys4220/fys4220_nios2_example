@@ -57,6 +57,14 @@
          type = "String";
       }
    }
+   element pio_irq
+   {
+      datum _sortIndex
+      {
+         value = "6";
+         type = "int";
+      }
+   }
    element pio_led
    {
       datum _sortIndex
@@ -120,6 +128,11 @@
  <instanceScript></instanceScript>
  <interface name="clk" internal="sys_clk.clk_in" type="clock" dir="end" />
  <interface
+   name="pio_irq_external_connection"
+   internal="pio_irq.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
    name="pio_led_external_connection"
    internal="pio_led.external_connection"
    type="conduit"
@@ -150,7 +163,7 @@
   <parameter name="dataAddrWidth" value="20" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_mem.s1' start='0x40000' end='0x65800' type='altera_avalon_onchip_memory2.s1' /><slave name='cpu.debug_mem_slave' start='0x80800' end='0x81000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='pio_led.s1' start='0x81000' end='0x81010' type='altera_avalon_pio.s1' /><slave name='pio_sw.s1' start='0x81010' end='0x81020' type='altera_avalon_pio.s1' /><slave name='jtag_uart.avalon_jtag_slave' start='0x81020' end='0x81028' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='pio_irq.s1' start='0x0' end='0x10' type='altera_avalon_pio.s1' /><slave name='onchip_mem.s1' start='0x40000' end='0x65800' type='altera_avalon_onchip_memory2.s1' /><slave name='cpu.debug_mem_slave' start='0x80800' end='0x81000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='pio_led.s1' start='0x81000' end='0x81010' type='altera_avalon_pio.s1' /><slave name='pio_sw.s1' start='0x81010' end='0x81020' type='altera_avalon_pio.s1' /><slave name='jtag_uart.avalon_jtag_slave' start='0x81020' end='0x81028' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -196,7 +209,7 @@
   <parameter name="instruction_master_high_performance_paddr_size" value="0" />
   <parameter name="instruction_master_paddr_base" value="0" />
   <parameter name="instruction_master_paddr_size" value="0" />
-  <parameter name="internalIrqMaskSystemInfo" value="65536" />
+  <parameter name="internalIrqMaskSystemInfo" value="65568" />
   <parameter name="io_regionbase" value="0" />
   <parameter name="io_regionsize" value="0" />
   <parameter name="master_addr_map" value="false" />
@@ -359,6 +372,20 @@
   <parameter name="useShallowMemBlocks" value="false" />
   <parameter name="writable" value="true" />
  </module>
+ <module name="pio_irq" kind="altera_avalon_pio" version="18.1" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="true" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="direction" value="Input" />
+  <parameter name="edgeType" value="FALLING" />
+  <parameter name="generateIRQ" value="true" />
+  <parameter name="irqType" value="EDGE" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="1" />
+ </module>
  <module name="pio_led" kind="altera_avalon_pio" version="18.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -430,6 +457,11 @@
   <parameter name="baseAddress" value="0x00081000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
+ <connection kind="avalon" version="18.1" start="cpu.data_master" end="pio_irq.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
  <connection
    kind="avalon"
    version="18.1"
@@ -452,9 +484,13 @@
  <connection kind="clock" version="18.1" start="sys_clk.clk" end="jtag_uart.clk" />
  <connection kind="clock" version="18.1" start="sys_clk.clk" end="pio_sw.clk" />
  <connection kind="clock" version="18.1" start="sys_clk.clk" end="pio_led.clk" />
+ <connection kind="clock" version="18.1" start="sys_clk.clk" end="pio_irq.clk" />
  <connection kind="clock" version="18.1" start="sys_clk.clk" end="onchip_mem.clk1" />
  <connection kind="interrupt" version="18.1" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="16" />
+ </connection>
+ <connection kind="interrupt" version="18.1" start="cpu.irq" end="pio_irq.irq">
+  <parameter name="irqNumber" value="5" />
  </connection>
  <connection kind="reset" version="18.1" start="sys_clk.clk_reset" end="cpu.reset" />
  <connection
@@ -472,6 +508,11 @@
    version="18.1"
    start="sys_clk.clk_reset"
    end="pio_led.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="sys_clk.clk_reset"
+   end="pio_irq.reset" />
  <connection
    kind="reset"
    version="18.1"
