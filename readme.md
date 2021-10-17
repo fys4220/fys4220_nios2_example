@@ -5,6 +5,16 @@ This is an example project based on the description found here:
 https://pages.github.uio.no/fys4220/fys4220/embedded/embedded_nios2_system.html#
 
 
+To test the code, clone this git repository, start the Nios II command shell en run the *create_and_compile_project.sh* script. This will create and compile the Quartus project, as well as the BSP and application software. Use *nios2-configure-sof* to program the FPGA, *nios2-download* to the application to the Nios II system, and the *nios2-termial* to connect to the system.
+
+```
+./create_and_compile_project.sh
+nios2-configure-sof quartus/output_files/system_top.sof
+nios2-download -g software/app/app.elf
+nios2-terminal
+```
+
+
 ## Basic system with JTAG UART 
 The first development step demonstrates a minimal version including only the CPU, the on-chip memory, and a JTAR UART. A basic "Hello, World!" software application makes use of the JTARG UART to communicate with the host PC. This version of the example is tagged "minimal" and can be viewed here:
 https://github.uio.no/FYS4220/fys4220_nios2_example/tree/minimal-v2
