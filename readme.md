@@ -3,6 +3,7 @@
 This is an example project based on the description found here:
 
 https://fys4220.github.io/part-exercises/exercises_nios2_example.html
+
 https://fys4220.github.io/part-exercises/exercises_memory_mapped_sw.html
 
 To test the code, clone this git repository, start the Nios II command shell en run the *create_and_compile_project.sh* script. This will create and compile the Quartus project, as well as the BSP and application software. Use *nios2-configure-sof* to program the FPGA, *nios2-download* to the application to the Nios II system, and the *nios2-termial* to connect to the system.
